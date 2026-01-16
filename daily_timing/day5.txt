@@ -1,0 +1,15 @@
+git vs github
+repository and it's operations
+clone,branch,commit push
+stash
+merge
+rebase
+conflicts
+
+linux inteview questions: partition,mounting, sudouser creation and change sudouser permission.
+			  update, upgrade, apt
+
+tommorrow:
+	github cli practices
+	interview based github oriented questions
+

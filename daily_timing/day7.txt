@@ -1,0 +1,11 @@
+servers
+cloud
+aws,gce,azure VMs
+amazon EC2
+public vs private subnets
+architecture of cloud
+pricing models of various compute instances
+stateful vs stateless
+VPN vs direct connect
+and hybrid cloud
+

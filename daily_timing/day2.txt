@@ -5,6 +5,5 @@ linux basics and architecture
 linux command practices
 
 tommorrow:
-	github notes
-	
-	
+	linux interview questions
+	linux shell script practice, hands-on practice

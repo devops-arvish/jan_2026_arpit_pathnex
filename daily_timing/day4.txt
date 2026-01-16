@@ -1,0 +1,9 @@
+linux interview question's commands run
+networking commands
+input output operational commands
+user based commands
+vi text editor
+
+tommorrow:
+	github
+	linux leftover commandline work practice

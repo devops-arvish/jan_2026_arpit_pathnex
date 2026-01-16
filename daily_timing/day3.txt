@@ -1,0 +1,7 @@
+linux commandline work
+connecting WSL with ec2
+file processing and permission commands
+process commands
+
+tommorrow:
+	revision and hands on work over linux commands

@@ -1,0 +1,13 @@
+git status
+github push process
+rm and restore
+
+branch practices
+
+token creation
+SSH key
+Personal Access Token
+revision github & linux
+
+tommorrow: 
+	AWS
