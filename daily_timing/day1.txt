@@ -1,0 +1,7 @@
+Linux
+basics of devops
+aws account EC2
+
+tommorrow:
+hands-on linux commands
+github setup

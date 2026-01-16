@@ -1,0 +1,10 @@
+git
+github
+github cli setup
+linux basics and architecture
+linux command practices
+
+tommorrow:
+	github notes
+	
+	
