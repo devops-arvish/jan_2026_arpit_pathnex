@@ -1,0 +1,263 @@
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ nano sid.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ cat sid.txt
+this is second file to be committed!!
+
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        sid.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git add
+Nothing specified, nothing added.
+hint: Maybe you wanted to say 'git add .'?
+hint: Turn this message off by running
+hint: "git config advice.addEmptyPathspec false"
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git add sid.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   sid.txt
+
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git -m commit sid.txt
+unknown option: -m
+usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [--config-env=<name>=<envvar>] <command> [<args>]
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git commit sid.txt
+Aborting commit due to empty commit message.
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git commit -m "Adding sid as try"
+[main 86cdfd9] Adding sid as try
+ 1 file changed, 2 insertions(+)
+ create mode 100644 sid.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin main
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 364 bytes | 364.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:devops-arvish/jan_2026_arpit_pathnex.git
+   a90053f..86cdfd9  main -> main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ nano sid.txt
+
+
+
+
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ cat sid.txt
+
+this is second file to be committed!!
+added another line
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git add sid.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   sid.txt
+
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git diff
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git restore
+fatal: you must specify path(s) to restore
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git commit -m "updated sid"
+[main 3b7722d] updated sid
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 308 bytes | 308.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To github.com:devops-arvish/jan_2026_arpit_pathnex.git
+   86cdfd9..3b7722d  main -> main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git checkout -b checking-branching
+Switched to a new branch 'checking-branching'
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch
+* checking-branching
+  main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ touch git_branch.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ nano git_branch.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git add git_branch.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch checking-branching
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   git_branch.txt
+
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git commit -m "adding a file to branch"
+[checking-branching 5b0d3d9] adding a file to branch
+ 1 file changed, 1 insertion(+)
+ create mode 100644 git_branch.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch checking-branching
+nothing to commit, working tree clean
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin git_branch.txt
+error: src refspec git_branch.txt does not match any
+error: failed to push some refs to 'github.com:devops-arvish/jan_2026_arpit_pathnex.git'
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin main
+Everything up-to-date
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin checking-branching
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 369 bytes | 369.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'checking-branching' on GitHub by visiting:
+remote:      https://github.com/devops-arvish/jan_2026_arpit_pathnex/pull/new/checking-branching
+remote:
+To github.com:devops-arvish/jan_2026_arpit_pathnex.git
+ * [new branch]      checking-branching -> checking-branching
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git checkout main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git pull --rebase origin main
+From github.com:devops-arvish/jan_2026_arpit_pathnex
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch -d checking-branching
+error: the branch 'checking-branching' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D checking-branching'
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git pull --rebase origin main
+From github.com:devops-arvish/jan_2026_arpit_pathnex
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch -d checking-branching
+error: the branch 'checking-branching' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D checking-branching'
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch -D checking-branching
+Deleted branch checking-branching (was 5b0d3d9).
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch
+* main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git pull --rebase origin main
+From github.com:devops-arvish/jan_2026_arpit_pathnex
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch
+* main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin main
+Everything up-to-date
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch -D checking-branching
+error: branch 'checking-branching' not found
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin --delete checking-branching
+To github.com:devops-arvish/jan_2026_arpit_pathnex.git
+ - [deleted]         checking-branching
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch
+* main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ tree
+.
+├── README.md
+├── daily_timing
+│   ├── day1.txt
+│   ├── day2.txt
+│   ├── day3.txt
+│   ├── day4.txt
+│   ├── day5.txt
+│   ├── day6.txt
+│   └── day7.txt
+└── sid.txt
+
+2 directories, 9 files
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git cherry-pick 5b0d3d9
+[main 789d2e5] adding a file to branch
+ Date: Tue Feb 3 21:43:59 2026 +0530
+ 1 file changed, 1 insertion(+)
+ create mode 100644 git_branch.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch
+* main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git checkout -b branch_after_recovering_from_cherry_cheery
+Switched to a new branch 'branch_after_recovering_from_cherry_cheery'
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git branch
+* branch_after_recovering_from_cherry_cheery
+  main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch branch_after_recovering_from_cherry_cheery
+nothing to commit, working tree clean
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git add git_branch.txt
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git status
+On branch branch_after_recovering_from_cherry_cheery
+nothing to commit, working tree clean
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin
+FETCH_HEAD                                   branch_after_recovering_from_cherry_cheery
+HEAD                                         main
+ORIG_HEAD                                    origin/main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin
+FETCH_HEAD                                   branch_after_recovering_from_cherry_cheery
+HEAD                                         main
+ORIG_HEAD                                    origin/main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin branch_after_recovering_from_cherry_cheery
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 377 bytes | 125.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'branch_after_recovering_from_cherry_cheery' on GitHub by visiting:
+remote:      https://github.com/devops-arvish/jan_2026_arpit_pathnex/pull/new/branch_after_recovering_from_cherry_cheery
+remote:
+To github.com:devops-arvish/jan_2026_arpit_pathnex.git
+ * [new branch]      branch_after_recovering_from_cherry_cheery -> branch_after_recovering_from_cherry_cheery
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git pull
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details.
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=origin/<branch> branch_after_recovering_from_cherry_cheery
+
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git checkout main
+Switched to branch 'main'
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git merge
+FETCH_HEAD
+HEAD
+ORIG_HEAD
+branch_after_recovering_from_cherry_cheery
+main
+origin/branch_after_recovering_from_cherry_cheery
+origin/main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git merge branch_after_recovering_from_cherry_cheery
+Already up to date.
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$ git push origin main
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:devops-arvish/jan_2026_arpit_pathnex.git
+   3b7722d..789d2e5  main -> main
+arvish@LAPTOP-7SAMJPLA:~/gitwork/jan_2026_arpit_pathnex$
