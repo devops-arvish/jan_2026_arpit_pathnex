@@ -1,0 +1,5 @@
+prepared
+AWS QnA
+Deployment strategies>> blue-green, canary, rollback
+WAF & Application Layer end points
+Load Balancing
