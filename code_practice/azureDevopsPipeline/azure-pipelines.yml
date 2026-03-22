@@ -15,9 +15,9 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: 'my_azure'
-    backendAzureRmResourceGroupName: 'tfstate-rg'
-    backendAzureRmStorageAccountName: 'sgdash'
+    backendServiceArm: 'arvishSCN'
+    backendAzureRmResourceGroupName: 'arvishRG'
+    backendAzureRmStorageAccountName: 'sc29062002'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
 
@@ -26,11 +26,11 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    environmentServiceNameAzureRM: 'my_azure'
+    environmentServiceNameAzureRM: 'arvishSCN'
 
 - task: TerraformTask@5
   displayName: Apply
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    environmentServiceNameAzureRM: 'my_azure'
+    environmentServiceNameAzureRM: 'arvishSCN'
