@@ -3,6 +3,6 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-cicd-demo"
+  name     = "rg-cicd-check"
   location = "Central India"
 }
