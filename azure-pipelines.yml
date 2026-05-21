@@ -13,7 +13,7 @@ stages:
       - job: printJob
         displayName: printScriptJob
         steps:
-          - task: Bash@3
+          - task: CmdLine@2
             displayName: bash Script to print
             inputs:
               script: echo "kuch bhi"
