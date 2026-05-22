@@ -26,7 +26,7 @@ resource "azurerm_resource_group" "bhaikarg" {
 
 resource "azurerm_storage_account" "bhaistg" {
   #for_each = var.resource_groups
-  name                     = "arpitstorageterraform"
+  name                     = "azurestorageterraformmanaged"
   resource_group_name      = azurerm_resource_group.bhaikarg.name
   location                 = azurerm_resource_group.bhaikarg.location
   account_tier             = "Standard"
