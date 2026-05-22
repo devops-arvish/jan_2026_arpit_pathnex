@@ -9,21 +9,21 @@ stages:
       - job: terraformInit
         displayName: terraform init job
         steps:
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: 'azurecloud'
-              backendAzureRmResourceGroupName: 'arpitRG'
-              backendAzureRmStorageAccountName: 'arpitstorageterraform'
-              backendAzureRmContainerName: 'arpitstorageterraformcontainer'
-              backendAzureRmKey: 'tf/terraform.tfstate'
-      - job: terraformPlan
-        displayName: Terraform Plan
-        steps:
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              environmentServiceNameAzureRM: 'azurecloud'
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendServiceArm: 'azurecloud'
+            backendAzureRmResourceGroupName: 'arpitRG'
+            backendAzureRmStorageAccountName: 'arpitstorageterraform'
+            backendAzureRmContainerName: 'arpitstorageterraformcontainer'
+            backendAzureRmKey: 'tf/terraform.tfstate'          
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            environmentServiceNameAzureRM: 'azurecloud'
           
