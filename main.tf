@@ -18,7 +18,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "bhaikarg" {
-  name     = "arpitRG"
+  name     = "azureRG"
   location = "Central India"
 }
 

@@ -1,0 +1,31 @@
+terraform-aws-infra/
+│
+├── environments/
+│   ├── dev/
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   ├── terraform.tfvars
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   │
+│   ├── qa/
+│   └── prod/
+│
+├── modules/
+│   ├── ec2/
+│   ├── vpc/
+│   ├── security-group/
+│   ├── s3/
+│   ├── alb/
+│   └── iam/
+│
+├── global/
+│   └── backend/
+│
+├── scripts/
+│
+├── .gitignore
+├── README.md
+├── provider.tf
+├── versions.tf
+└── locals.tf
