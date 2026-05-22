@@ -1,5 +1,4 @@
 trigger: none
-
 pool:
   vmImage: ubuntu-latest
 stages:
@@ -26,4 +25,8 @@ stages:
             provider: 'azurerm'
             command: 'plan'
             environmentServiceNameAzureRM: 'azurecloud'
-          
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            environmentServiceNameAzureRM: 'azurecloud'
