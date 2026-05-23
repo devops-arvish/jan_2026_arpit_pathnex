@@ -12,6 +12,7 @@ jobs:
   - job: terraformInstaller
     displayName: "Install terraform"
     steps:
+
     - task: TerraformInstaller@1
       inputs:
         terraformVersion: 'latest'
@@ -20,6 +21,7 @@ jobs:
       inputs:
         provider: 'azurerm'
         command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev/main.tf'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'azurecloud'
         backendAzureRmResourceGroupName: 'arpitRG'
@@ -33,9 +35,11 @@ jobs:
       inputs:
         provider: 'azurerm'
         command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev/main.tf'
         environmentServiceNameAzureRM: 'azurecloud'
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev/main.tf'
         environmentServiceNameAzureRM: 'azurecloud'
