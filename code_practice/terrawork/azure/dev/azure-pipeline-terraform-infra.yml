@@ -31,15 +31,21 @@ jobs:
 
 
     
+    # - task: TerraformTask@5
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'plan'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev'
+    #     environmentServiceNameAzureRM: 'azurecloud'
+    # - task: TerraformTask@5
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'apply'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev'
+    #     environmentServiceNameAzureRM: 'azurecloud'
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
-        command: 'plan'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev'
-        environmentServiceNameAzureRM: 'azurecloud'
-    - task: TerraformTask@5
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
+        command: 'destroy'
         workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev'
         environmentServiceNameAzureRM: 'azurecloud'
