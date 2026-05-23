@@ -21,7 +21,7 @@ jobs:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev/main.tf'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'azurecloud'
         backendAzureRmResourceGroupName: 'arpitRG'
@@ -35,11 +35,11 @@ jobs:
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev/main.tf'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev'
         environmentServiceNameAzureRM: 'azurecloud'
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev/main.tf'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/dev'
         environmentServiceNameAzureRM: 'azurecloud'
