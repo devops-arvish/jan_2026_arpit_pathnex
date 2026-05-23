@@ -6,10 +6,6 @@ variable "location" {
     type = string
      
 }
-variable "azurerm_resource_group" {
-    type = string
-     
-}
 variable "storage_account_name" {
     type = string
      
