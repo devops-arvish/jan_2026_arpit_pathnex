@@ -27,7 +27,7 @@ jobs:
         backendAzureRmResourceGroupName: 'arpitRG'
         backendAzureRmStorageAccountName: 'azurebackendterra'
         backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'terraform.tfstate'
+        backendAzureRmKey: 'terraformBackend.tfstate'
 
 
     
