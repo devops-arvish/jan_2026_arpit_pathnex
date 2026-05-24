@@ -1,0 +1,15 @@
+resource "azurerm_storage_account" "stg" {
+  name                     = var.name
+  resource_group_name      = var.rg_name
+  location                 = var.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  min_tls_version = "TLS1_2"
+
+  https_traffic_only_enabled = true   # ✅ updated name
+
+  public_network_access_enabled = true  # (this controls network access, NOT blob public access)
+
+  allow_nested_items_to_be_public = false  # ✅ replaces allow_blob_public_access
+}
