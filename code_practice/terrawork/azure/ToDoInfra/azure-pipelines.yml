@@ -10,7 +10,8 @@ trigger: none
 #    - feature
 #    - main
 
-pool: org_pool
+pool: 
+  vmImage: ubuntu-latest
 
 stages:
 - stage: terraforminstall
