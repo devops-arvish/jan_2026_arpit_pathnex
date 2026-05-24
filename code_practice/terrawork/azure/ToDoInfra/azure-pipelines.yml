@@ -26,6 +26,7 @@ stages:
 
       - task: tfsec@1
         inputs:
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/ToDoInfra/env/dev'
           version: 'v1.26.0'
           debug: true
 
@@ -35,6 +36,7 @@ stages:
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/ToDoInfra/env/dev'
           script: |
             tflint --init
             tflint --format json > tflint-report.json
