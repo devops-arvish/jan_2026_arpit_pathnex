@@ -28,7 +28,7 @@ stages:
           provider: 'azurerm'
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/ToDoInfra/env/dev'
-          backendServiceArm: 'azurecloud'
+          backendServiceArm: 'azureCloud2'
           backendAzureRmResourceGroupName: 'arpitRG'
           backendAzureRmStorageAccountName: 'arpit123'
           backendAzureRmContainerName: 'tfstate'
