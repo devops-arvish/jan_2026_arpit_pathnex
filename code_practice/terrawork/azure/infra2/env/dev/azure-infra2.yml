@@ -1,0 +1,29 @@
+trigger: none
+pool:
+  vmImage: ubuntu-image
+
+stages:
+  - stage: terraformInit
+    displayName: install and init
+    jobs:
+      - job: install_and_init
+        displayName: install terraform and run init
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+              backendServiceArm: 'azurecloud'
+              backendAzureRmResourceGroupName: 'arpitRG'
+              backendAzureRmStorageAccountName: 'arpit123'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'dev-terraform.tfstate'
+          - task: tfsec@1
+            inputs:
+              version: 'v1.26.0'
+              # dir: 'code_practice/terrawork/azure/infra2/'
+          
