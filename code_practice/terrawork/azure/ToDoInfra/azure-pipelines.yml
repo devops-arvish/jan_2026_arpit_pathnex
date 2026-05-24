@@ -1,14 +1,14 @@
-trigger:
- branches:
-  include:
-    - main
-    - develop
+trigger: none
+#  branches:
+#   include:
+#     - main
+#     - develop
 
-pr:
-  branches:
-   include:
-   - feature
-   - main
+# pr:
+#   branches:
+#    include:
+#    - feature
+#    - main
 
 pool: org_pool
 
@@ -86,11 +86,11 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/ToDoInfra/env/dev'
           backendAzureRmUseEntraIdForAuthentication: false
-          backendServiceArm: 'azure-spn'
-          backendAzureRmResourceGroupName: 'praveen-rgs'
-          backendAzureRmStorageAccountName: 'praveen1234'
+          backendServiceArm: 'azurecloud'
+          backendAzureRmResourceGroupName: 'arpitRG'
+          backendAzureRmStorageAccountName: 'arpit123'
           backendAzureRmContainerName: 'tfstate'
           backendAzureRmKey: 'dev-terraform.tfstate'
 
@@ -98,8 +98,8 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'plan'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev'
-          environmentServiceNameAzureRM: 'azure-spn'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/ToDoInfra/env/dev'
+          environmentServiceNameAzureRM: 'azurecloud'
 
 - stage: ManualValidation
   displayName: Manual Validation
@@ -131,16 +131,23 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev/'
-          backendServiceArm: 'azure-spn'
-          backendAzureRmResourceGroupName: 'praveen-rgs'
-          backendAzureRmStorageAccountName: 'praveen123'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/ToDoInfra/env/dev'
+          backendServiceArm: 'azurecloud'
+          backendAzureRmResourceGroupName: 'arpitRG'
+          backendAzureRmStorageAccountName: 'arpit123'
           backendAzureRmContainerName: 'tfstate'
           backendAzureRmKey: 'dev-terraform.tfstate'
           
       - task: TerraformTask@5
         inputs:
           provider: 'azurerm'
-          command: 'apply'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev/'
-          environmentServiceNameAzureRM: 'azure-spn'
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/ToDoInfra/env/dev'
+
+
+      # - task: TerraformTask@5
+      #   inputs:
+      #     provider: 'azurerm'
+      #     command: 'apply'
+      #     workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev/'
+      #     environmentServiceNameAzureRM: 'azure-spn'
