@@ -1,0 +1,146 @@
+trigger:
+ branches:
+  include:
+    - main
+    - develop
+
+pr:
+  branches:
+   include:
+   - feature
+   - main
+
+pool: org_pool
+
+stages:
+- stage: terraforminstall
+  displayName: 
+  jobs:
+    - job: terraformInit
+      displayName: 
+      steps:
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: 'latest'
+
+      - task: tfsec@1
+        inputs:
+          version: 'v1.26.0'
+          debug: true
+
+    - job: terraformLint
+      displayName: 
+      steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            tflint --init
+            tflint --format json > tflint-report.json
+
+    - job: tfScan
+      displayName: tfscan
+      steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            tfsec . --format json > tfsec-report.json  
+
+    - job: checkovScan
+      displayName: Checkov Scan
+      steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: 'checkov -d . --soft-fail -o json > checkov-report.json'
+   
+- stage: TerraformInitPlan
+  displayName: Terraform Init
+  jobs:
+    - job: TerraformInit
+      displayName: Plan and Apply
+      steps:
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: 'latest'
+      
+      - task: PowerShell@2
+        displayName: Set Terraform Plugin Cache
+        inputs:
+          targetType: inline
+          script: |
+            $pluginCache = "$(Pipeline.Workspace)/tfplugin-cache"
+            New-Item -ItemType Directory -Path $pluginCache -Force | Out-Null
+            Write-Host "##vso[task.setvariable variable=TF_PLUGIN_CACHE_DIR]$pluginCache"
+
+      - task: Cache@2
+        displayName: Cache Terraform plugins
+        inputs:
+          key: 'terraform | "$(Agent.OS)"'
+          restoreKeys: |
+            terraform
+          path: '$(Pipeline.Workspace)/tfplugin-cache'
+
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev'
+          backendAzureRmUseEntraIdForAuthentication: false
+          backendServiceArm: 'azure-spn'
+          backendAzureRmResourceGroupName: 'praveen-rgs'
+          backendAzureRmStorageAccountName: 'praveen1234'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev-terraform.tfstate'
+
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev'
+          environmentServiceNameAzureRM: 'azure-spn'
+
+- stage: ManualValidation
+  displayName: Manual Validation
+  dependsOn: TerraformInitPlan
+  pool: server
+  jobs:
+    - job: ManualValidation
+      displayName: Manual Validation
+      steps:
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: 'mishrapraveenm94@gmail.com'
+          approvers: 'mishrapraveenm94@gmail.com'
+          onTimeout: 'resume'
+
+- stage: TerraformApply
+  displayName: Terraform Apply
+  dependsOn: ManualValidation
+  condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+    - job: terraforInstall
+      displayName: terraforInstall
+      steps:
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: 'latest'
+      
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev/'
+          backendServiceArm: 'azure-spn'
+          backendAzureRmResourceGroupName: 'praveen-rgs'
+          backendAzureRmStorageAccountName: 'praveen123'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev-terraform.tfstate'
+          
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/env/dev/'
+          environmentServiceNameAzureRM: 'azure-spn'
