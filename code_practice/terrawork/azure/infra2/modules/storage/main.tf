@@ -12,4 +12,13 @@ resource "azurerm_storage_account" "stg" {
   public_network_access_enabled = true  # (this controls network access, NOT blob public access)
 
   allow_nested_items_to_be_public = false  # ✅ replaces allow_blob_public_access
+  queue_properties  {
+     logging {
+         delete                = true
+         read                  = true
+         write                 = true
+         version               = "1.0"
+         retention_policy_days = 10
+     }
+
 }
