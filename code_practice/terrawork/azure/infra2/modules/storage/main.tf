@@ -20,5 +20,6 @@ resource "azurerm_storage_account" "stg" {
          version               = "1.0"
          retention_policy_days = 10
      }
+  }
 
 }
