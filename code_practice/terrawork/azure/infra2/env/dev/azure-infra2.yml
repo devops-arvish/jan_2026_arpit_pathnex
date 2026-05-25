@@ -46,14 +46,17 @@ stages:
     displayName: Manual Validation
     dependsOn: terraformInitTest
     pool: server
+
     jobs:
     - job: ManualValidation
       displayName: Manual Validation
       steps:
       - task: ManualValidation@1
         inputs:
-          notifyUsers: 'mishrapraveenm94@gmail.com'
-          approvers: 'mishrapraveenm94@gmail.com'
+          notifyUsers: |
+            mishrapraveenm55@gmail.com
+            arvishpanther@gmail.com
+          approvers: 'arvishpanther@gmail.com'
           onTimeout: 'resume'
 
           
