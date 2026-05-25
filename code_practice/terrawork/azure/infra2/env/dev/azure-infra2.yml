@@ -18,29 +18,43 @@ stages:
       - job: terraformLint
         displayName: 
         steps:
-        - task: PowerShell@2
-          inputs:
-            targetType: 'inline'
-            script: |
+         
+          - bash: |
+              # Download and install latest TFLint binary
+              curl -s https://githubusercontent.com | bash
+
+              # Initialize TFLint configuration
               tflint --init
-              tflint --format json > tflint-report.json
-        
-        - task: tfsec@1
-          inputs:
-              version: 'v1.26.0'
-              dir: 'code_practice/terrawork/azure/infra2/'
 
-
-        - task: TerraformTask@5
-          inputs:
-              provider: 'azurerm'
-              command: 'init'
+              # Install the Azure ruleset plugin for azurerm
+              tflint --config .tflint.hcl
+              displayName: 'Install and Configure TFLint'
               workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-              backendServiceArm: 'azurecloud'
-              backendAzureRmResourceGroupName: 'arpitRG'
-              backendAzureRmStorageAccountName: 'arpit123'
-              backendAzureRmContainerName: 'tfstate'
-              backendAzureRmKey: 'dev-terraform.tfstate'
+
+        
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                tflint --init
+                tflint --format json > tflint-report.json
+
+          - task: tfsec@1
+            inputs:
+                version: 'v1.26.0'
+                dir: 'code_practice/terrawork/azure/infra2/'
+
+
+          - task: TerraformTask@5
+            inputs:
+                provider: 'azurerm'
+                command: 'init'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+                backendServiceArm: 'azurecloud'
+                backendAzureRmResourceGroupName: 'arpitRG'
+                backendAzureRmStorageAccountName: 'arpit123'
+                backendAzureRmContainerName: 'tfstate'
+                backendAzureRmKey: 'dev-terraform.tfstate'
           
   - stage: ManualValidation
     displayName: Manual Validation
