@@ -4,7 +4,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: terraformInit
+  - stage: terraformInitTest
     displayName: install and init
     jobs:
       - job: install_and_init
@@ -13,8 +13,26 @@ stages:
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: 'latest'
-          - task: TerraformTask@5
-            inputs:
+
+
+      - job: terraformLint
+        displayName: 
+        steps:
+        - task: PowerShell@2
+          inputs:
+            targetType: 'inline'
+            script: |
+              tflint --init
+              tflint --format json > tflint-report.json
+        
+        - task: tfsec@1
+          inputs:
+              version: 'v1.26.0'
+              dir: 'code_practice/terrawork/azure/infra2/'
+
+
+        - task: TerraformTask@5
+          inputs:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
@@ -23,8 +41,19 @@ stages:
               backendAzureRmStorageAccountName: 'arpit123'
               backendAzureRmContainerName: 'tfstate'
               backendAzureRmKey: 'dev-terraform.tfstate'
-          - task: tfsec@1
-            inputs:
-              version: 'v1.26.0'
-              dir: 'code_practice/terrawork/azure/infra2/'
+          
+  - stage: ManualValidation
+    displayName: Manual Validation
+    dependsOn: terraformInitTest
+    pool: server
+    jobs:
+    - job: ManualValidation
+      displayName: Manual Validation
+      steps:
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: 'mishrapraveenm94@gmail.com'
+          approvers: 'mishrapraveenm94@gmail.com'
+          onTimeout: 'resume'
+
           
