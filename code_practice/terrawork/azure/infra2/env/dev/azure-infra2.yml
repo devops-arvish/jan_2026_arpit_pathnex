@@ -31,7 +31,7 @@ stages:
         - script: |
             cd code_practice/terrawork/azure/infra2/env/dev
             tflint --init
-            tflint --format json > tflint-report.json
+            tflint --format json | tee tflint-report.json
           displayName: Run TFLint
 
         # tfsec
