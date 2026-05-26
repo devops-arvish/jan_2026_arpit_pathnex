@@ -16,61 +16,56 @@ stages:
 
 
       - job: terraformLint
-        displayName: 
+        displayName: Terraform Lint & Security
+
+
         steps:
-         
-          - bash: |
-              # Download and install latest TFLint binary
-              curl -s https://githubusercontent.com | bash
+        - checkout: self
 
-              # Initialize TFLint configuration
-              tflint --init
+        # tflint installation
+        - script: |
+            curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+          displayName: Install TFLint
 
-              # Install the Azure ruleset plugin for azurerm
-              tflint --config .tflint.hcl
-              displayName: 'Install and Configure TFLint'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+        # run tflint
+        - script: |
+            cd code_practice/terrawork/azure/infra2/env/dev
+            tflint --init
+            tflint --format json > tflint-report.json
+          displayName: Run TFLint
 
-        
-          - task: PowerShell@2
-            inputs:
-              targetType: 'inline'
-              script: |
-                tflint --init
-                tflint --format json > tflint-report.json
+        # tfsec
+        - task: tfsec@1
+          inputs:
+            version: 'v1.26.0'
+            dir: 'code_practice/terrawork/azure/infra2/env/dev'
 
-          - task: tfsec@1
-            inputs:
-                version: 'v1.26.0'
-                dir: 'code_practice/terrawork/azure/infra2/'
-
-
-          - task: TerraformTask@5
-            inputs:
-                provider: 'azurerm'
-                command: 'init'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-                backendServiceArm: 'azurecloud'
-                backendAzureRmResourceGroupName: 'arpitRG'
-                backendAzureRmStorageAccountName: 'arpit123'
-                backendAzureRmContainerName: 'tfstate'
-                backendAzureRmKey: 'dev-terraform.tfstate'
+  #       - task: TerraformTask@5
+  #         inputs:
+  #           provider: 'azurerm'
+  #           command: 'init'
+  #           workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+  #           backendServiceArm: 'azurecloud'
+  #           backendAzureRmResourceGroupName: 'arpitRG'
+  #           backendAzureRmStorageAccountName: 'arpit123'
+  #           backendAzureRmContainerName: 'tfstate'
+  #           backendAzureRmKey: 'dev-terraform.tfstate'
           
-  - stage: ManualValidation
-    displayName: Manual Validation
-    dependsOn: terraformInitTest
-    pool: server
+  # - stage: ManualValidation
+  #   displayName: Manual Validation
+  #   dependsOn: terraformInitTest
+  #   pool: server
 
-    jobs:
-    - job: ManualValidation
-      displayName: Manual Validation
-      steps:
-      - task: ManualValidation@1
-        inputs:
-          notifyUsers: |
-            mishrapraveenm55@gmail.com
-            arvishpanther@gmail.com
-          approvers: 'arvishpanther@gmail.com'
-          onTimeout: 'resume'
+  #   jobs:
+  #   - job: ManualValidation
+  #     displayName: Manual Validation
+  #     steps:
+  #     - task: ManualValidation@1
+  #       inputs:
+  #         notifyUsers: |
+  #           mishrapraveenm55@gmail.com
+  #           arvishpanther@gmail.com
+  #         approvers: 'arvishpanther@gmail.com'
+  #         onTimeout: 'resume'
 
           
