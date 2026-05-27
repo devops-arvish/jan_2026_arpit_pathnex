@@ -35,9 +35,8 @@ stages:
           displayName: Run TFLint
 
         # tfsec
-        - task: tfsec@1
-          inputs:
-            version: 'v1.26.0'
+        - script: |
+            curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
             dir: 'code_practice/terrawork/azure/infra2/env/dev'
 
   #       - task: TerraformTask@5
