@@ -34,6 +34,15 @@ stages:
             tflint --format json | tee tflint-report.json
           displayName: Run TFLint
 
+        #artifact stores
+        - task: PublishBuildArtifacts@1
+          condition: always()
+          inputs:
+            pathToPublish: 'code_practice/terrawork/azure/infra2/env/dev/tflint-report.json'
+            artifactName: 'tflint-report'
+            publishLocation: 'Container'
+          displayName: Publish TFLint Report
+
         # tfsec
         - script: |
             curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
