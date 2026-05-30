@@ -49,8 +49,13 @@ stages:
             cd code_practice/terrawork/azure/infra2/env/dev
         
         #checkov
+        - script: |
+            docker run --rm \
+              -v "$(System.DefaultWorkingDirectory):/tf" \
+              bridgecrew/checkov \
+              -d /tf/code_practice/terrawork/azure/infra2/env/dev
+          displayName: Run Checkov
         
-
   #       - task: TerraformTask@5
   #         inputs:
   #           provider: 'azurerm'
