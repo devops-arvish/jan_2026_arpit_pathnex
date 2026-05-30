@@ -50,11 +50,22 @@ stages:
         
         #checkov
         - script: |
+            mkdir -p $(System.DefaultWorkingDirectory)/reports
+
             docker run --rm \
               -v "$(System.DefaultWorkingDirectory):/tf" \
               bridgecrew/checkov \
-              -d /tf/code_practice/terrawork/azure/infra2/env/dev
+              -d /tf/code_practice/terrawork/azure/infra2/env/dev \
+              -o json > $(System.DefaultWorkingDirectory)/reports/checkov-report.json || true
           displayName: Run Checkov
+
+          #checkov-artifact
+        - task: PublishPipelineArtifact@1
+          condition: always()
+          inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)/reports/checkov-report.json'
+            artifact: 'checkov-report'
+          displayName: Publish Checkov Report
         
   #       - task: TerraformTask@5
   #         inputs:
