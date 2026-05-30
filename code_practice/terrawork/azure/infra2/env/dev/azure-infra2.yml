@@ -47,6 +47,9 @@ stages:
         - script: |
             curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
             cd code_practice/terrawork/azure/infra2/env/dev
+        
+        #checkov
+        
 
   #       - task: TerraformTask@5
   #         inputs:
