@@ -76,7 +76,11 @@ stages:
             targetPath: '$(System.DefaultWorkingDirectory)/reports/checkov-report.json'
             artifact: 'checkov-report'
           displayName: Publish Checkov Report
-
+        
+        #install tf
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
           #tf init
         - task: TerraformTask@5
           displayName: terraform init
