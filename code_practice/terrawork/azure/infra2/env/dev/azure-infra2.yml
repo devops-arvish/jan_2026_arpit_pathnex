@@ -13,6 +13,8 @@ stages:
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: 'latest'
+          
+
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
@@ -59,6 +61,7 @@ stages:
             curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
             cd code_practice/terrawork/azure/infra2/env/dev
             tfsec .
+            displayName: Run tfsec
         
         #checkov
         - script: |
@@ -78,6 +81,24 @@ stages:
             targetPath: '$(System.DefaultWorkingDirectory)/reports/checkov-report.json'
             artifact: 'checkov-report'
           displayName: Publish Checkov Report
+
+          #tf init
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+            backendServiceArm: 'azurecloud'
+            backendAzureRmResourceGroupName: 'arpitRG'
+            backendAzureRmStorageAccountName: 'arpit123'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: 'dev-terraform.tfstate'
+        
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
         
         
 
@@ -99,6 +120,7 @@ stages:
               backendAzureRmStorageAccountName: 'arpit123'
               backendAzureRmContainerName: 'tfstate'
               backendAzureRmKey: 'dev-terraform.tfstate'
+
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
@@ -157,12 +179,12 @@ stages:
             backendAzureRmKey: 'dev-terraform.tfstate'
 
 
-        - task: TerraformTask@5
-          inputs:
-            provider: 'azurerm'
-            command: 'apply'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-            commandOptions: '$(Pipeline.Workspace)/tfplan/tfplan'
-            environmentServiceNameAzureRM: 'azurecloud'
+        # - task: TerraformTask@5
+        #   inputs:
+        #     provider: 'azurerm'
+        #     command: 'apply'
+        #     workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+        #     commandOptions: '$(Pipeline.Workspace)/tfplan/tfplan'
+        #     environmentServiceNameAzureRM: 'azurecloud'
 
           
