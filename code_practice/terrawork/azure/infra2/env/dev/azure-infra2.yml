@@ -79,6 +79,7 @@ stages:
 
           #tf init
         - task: TerraformTask@5
+          displayName: terraform init
           inputs:
             provider: 'azurerm'
             command: 'init'
@@ -90,6 +91,7 @@ stages:
             backendAzureRmKey: 'dev-terraform.tfstate'
         
         - task: TerraformTask@5
+          displayName: tf validate
           inputs:
             provider: 'azurerm'
             command: 'validate'
@@ -106,6 +108,7 @@ stages:
         displayName: terraform plan
         steps:
           - task: TerraformTask@5
+            displayName: tf init
             inputs:
               provider: 'azurerm'
               command: 'init'
@@ -117,6 +120,7 @@ stages:
               backendAzureRmKey: 'dev-terraform.tfstate'
 
           - task: TerraformTask@5
+            displayName: tf plan
             inputs:
               provider: 'azurerm'
               command: 'plan'
@@ -124,6 +128,7 @@ stages:
               commandOptions: '-out=tfplan'
               environmentServiceNameAzureRM: 'azurecloud'
           - task: PublishPipelineArtifact@1
+          
             inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev/tfplan'
               artifact: 'tfplan'
@@ -140,6 +145,7 @@ stages:
       
       steps:
       - task: ManualValidation@1
+        displayName: validation
         inputs:
           notifyUsers: |
             mishrapraveenm55@gmail.com
@@ -152,7 +158,7 @@ stages:
     displayName: apply after validation
     jobs:
     - job: tfApply
-      displayName: terraform apply
+      displayName: apply process
       steps:
         - task: DownloadPipelineArtifact@2
           inputs:
@@ -163,6 +169,7 @@ stages:
           inputs:
             terraformVersion: 'latest'
         - task: TerraformTask@5
+          displayName: tf init
           inputs:
             provider: 'azurerm'
             command: 'init'
