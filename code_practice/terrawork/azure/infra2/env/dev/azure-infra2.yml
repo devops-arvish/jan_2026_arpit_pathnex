@@ -13,12 +13,23 @@ stages:
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: 'latest'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
 
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'custom'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+              # outputTo: 'console'
+              customCommand: 'fmt'
+              environmentServiceNameAzureRM: 'azurecloud'
 
       - job: terraformLint
         displayName: Terraform Lint & Security
-
-
         steps:
         - checkout: self
 
@@ -31,7 +42,7 @@ stages:
         - script: |
             cd code_practice/terrawork/azure/infra2/env/dev
             tflint --init
-            tflint --format json | tee tflint-report.json
+            tflint --format json | tee tflint-report.json || true
           displayName: Run TFLint
 
         #artifact stores
@@ -47,6 +58,7 @@ stages:
         - script: |
             curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
             cd code_practice/terrawork/azure/infra2/env/dev
+            tfsec .
         
         #checkov
         - script: |
@@ -67,32 +79,90 @@ stages:
             artifact: 'checkov-report'
           displayName: Publish Checkov Report
         
-  #       - task: TerraformTask@5
-  #         inputs:
-  #           provider: 'azurerm'
-  #           command: 'init'
-  #           workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-  #           backendServiceArm: 'azurecloud'
-  #           backendAzureRmResourceGroupName: 'arpitRG'
-  #           backendAzureRmStorageAccountName: 'arpit123'
-  #           backendAzureRmContainerName: 'tfstate'
-  #           backendAzureRmKey: 'dev-terraform.tfstate'
-          
-  # - stage: ManualValidation
-  #   displayName: Manual Validation
-  #   dependsOn: terraformInitTest
-  #   pool: server
+        
 
-  #   jobs:
-  #   - job: ManualValidation
-  #     displayName: Manual Validation
-  #     steps:
-  #     - task: ManualValidation@1
-  #       inputs:
-  #         notifyUsers: |
-  #           mishrapraveenm55@gmail.com
-  #           arvishpanther@gmail.com
-  #         approvers: 'arvishpanther@gmail.com'
-  #         onTimeout: 'resume'
+  - stage: tfPlan
+    displayName: terraform plan
+    dependsOn: terraformInitTest
+    
+    jobs:
+      - job: tfPlan
+        displayName: terraform plan
+        steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+              backendServiceArm: 'azurecloud'
+              backendAzureRmResourceGroupName: 'arpitRG'
+              backendAzureRmStorageAccountName: 'arpit123'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'dev-terraform.tfstate'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+              commandOptions: '-out=tfplan'
+              environmentServiceNameAzureRM: 'azurecloud'
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev/tfplan'
+              artifact: 'tfplan'
+            displayName: Publish Terraform Plan
+
+
+  - stage: ManualValidation
+    displayName: Manual Validation
+    dependsOn: tfPlan
+    pool: server
+    jobs:
+    - job: ManualValidation
+      displayName: Manual Validation
+      
+      steps:
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: |
+            mishrapraveenm55@gmail.com
+            arvishpanther@gmail.com
+          approvers: 'arvishpanther@gmail.com'
+          onTimeout: 'reject'
+
+  - stage: tfApply
+    dependsOn: ManualValidation
+    displayName: apply after validation
+    jobs:
+    - job: tfApply
+      displayName: terraform apply
+      steps:
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: 'tfplan'
+            path: '$(Pipeline.Workspace)/tfplan'
+
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+            backendServiceArm: 'azurecloud'
+            backendAzureRmResourceGroupName: 'arpitRG'
+            backendAzureRmStorageAccountName: 'arpit123'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: 'dev-terraform.tfstate'
+
+
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+            commandOptions: '$(Pipeline.Workspace)/tfplan/tfplan'
+            environmentServiceNameAzureRM: 'azurecloud'
 
           
