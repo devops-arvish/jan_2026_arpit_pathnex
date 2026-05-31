@@ -10,17 +10,11 @@ stages:
       - job: install_and_init
         displayName: install terraform and run init
         steps:
+        #install tf
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: 'latest'
           
-
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'validate'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
