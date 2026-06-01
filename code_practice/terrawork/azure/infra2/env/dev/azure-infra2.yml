@@ -28,6 +28,11 @@ stages:
         displayName: Terraform Lint & Security
         steps:
         - checkout: self
+        
+        #install tf
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
 
         # tflint installation
         - script: |
@@ -77,10 +82,6 @@ stages:
             artifact: 'checkov-report'
           displayName: Publish Checkov Report
         
-        #install tf
-        - task: TerraformInstaller@1
-          inputs:
-            terraformVersion: 'latest'
           #tf init
         - task: TerraformTask@5
           displayName: terraform init
