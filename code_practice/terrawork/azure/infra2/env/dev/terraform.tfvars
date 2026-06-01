@@ -8,7 +8,7 @@ subnet_prefix = ["10.0.1.0/24"]
 
 storage_name = "stgdev12345"
 
-kv_name = "kv-dev-123"
+kv_name = "key-dev-2"
 
 vm_name        = "vm-dev"
 nic_name       = "nic-dev"
