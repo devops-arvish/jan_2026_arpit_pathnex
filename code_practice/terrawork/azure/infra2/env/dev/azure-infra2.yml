@@ -133,11 +133,15 @@ stages:
               backendAzureRmContainerName: 'tfstate'
               backendAzureRmKey: 'dev-terraform.tfstate'
           - script: |
-               KEY_PREFIX=$(echo "$(key-dev-2)" | awk '{print $1}')
-
-               echo "Type: $KEY_PREFIX"
-               echo "Length: $(echo "$(key-dev-2)" | wc -c)"
+              echo "Length: ${#SSH_KEY}"
+          
+              KEY_PREFIX=$(echo "$SSH_KEY" | awk '{print $1}')
+              echo "Type: $KEY_PREFIX"
+            env:
+              SSH_KEY: $(ssh-public-key)
             displayName: Verify SSH Key Format
+
+        
         # #plan
         #   - task: TerraformTask@5
         #     displayName: tf plan
