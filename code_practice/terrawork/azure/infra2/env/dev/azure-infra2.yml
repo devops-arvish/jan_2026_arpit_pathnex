@@ -3,6 +3,9 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - group: 'key vault secret for terraform'
+
 stages:
   - stage: terraformInitTest
     displayName: install and init
@@ -146,12 +149,12 @@ stages:
         #       environmentServiceNameAzureRM: 'azurecloud'
 
           #artifact publish
-          - task: PublishPipelineArtifact@1
+          # - task: PublishPipelineArtifact@1
           
-            inputs:
-              targetPath: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev/tfplan'
-              artifact: 'tfplan'
-            displayName: Publish Terraform Plan
+          #   inputs:
+          #     targetPath: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev/tfplan'
+          #     artifact: 'tfplan'
+          #   displayName: Publish Terraform Plan
 
 
   # - stage: ManualValidation
