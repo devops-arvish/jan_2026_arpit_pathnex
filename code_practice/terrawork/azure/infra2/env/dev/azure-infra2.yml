@@ -20,7 +20,7 @@ stages:
               provider: 'azurerm'
               command: 'custom'
               workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-              # outputTo: 'console'
+              outputTo: 'console'
               customCommand: 'fmt'
               environmentServiceNameAzureRM: 'azurecloud'
 
@@ -136,7 +136,7 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-              commandOptions: '-out=tfplan'
+              commandOptions: '-out=tfplan -var="ssh_public_key=$(key-dev-2)'
               environmentServiceNameAzureRM: 'azurecloud'
 
           #artifact publish
