@@ -121,17 +121,17 @@ stages:
             inputs:
               terraformVersion: 'latest'
         #init
-          - task: TerraformTask@5
-            displayName: tf init
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-              backendServiceArm: 'azurecloud'
-              backendAzureRmResourceGroupName: 'arpitRG'
-              backendAzureRmStorageAccountName: 'arpit123'
-              backendAzureRmContainerName: 'tfstate'
-              backendAzureRmKey: 'dev-terraform.tfstate'
+          # - task: TerraformTask@5
+          #   displayName: tf init
+          #   inputs:
+          #     provider: 'azurerm'
+          #     command: 'init'
+          #     workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+          #     backendServiceArm: 'azurecloud'
+          #     backendAzureRmResourceGroupName: 'arpitRG'
+          #     backendAzureRmStorageAccountName: 'arpit123'
+          #     backendAzureRmContainerName: 'tfstate'
+          #     backendAzureRmKey: 'dev-terraform.tfstate'
           - script: |
               echo "Length: ${#SSH_KEY}"
           
@@ -144,6 +144,13 @@ stages:
               echo "Words: $(echo "$SSH_KEY" | wc -w)"
             env:
               SSH_KEY: $(ssh-public-key)
+
+          - script: |
+              echo "$SSH_KEY" > key.pub
+              ssh-keygen -lf key.pub
+            env:
+              SSH_KEY: $(ssh-public-key)
+            displayName: Compare SSH Fingerprint
 
         
         #plan
