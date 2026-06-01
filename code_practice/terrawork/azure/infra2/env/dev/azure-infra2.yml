@@ -112,6 +112,12 @@ stages:
       - job: tfPlan
         displayName: terraform plan
         steps:
+          
+        #install tf
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: 'latest'
+        #init
           - task: TerraformTask@5
             displayName: tf init
             inputs:
@@ -123,7 +129,7 @@ stages:
               backendAzureRmStorageAccountName: 'arpit123'
               backendAzureRmContainerName: 'tfstate'
               backendAzureRmKey: 'dev-terraform.tfstate'
-
+        #plan
           - task: TerraformTask@5
             displayName: tf plan
             inputs:
@@ -132,6 +138,8 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
               commandOptions: '-out=tfplan'
               environmentServiceNameAzureRM: 'azurecloud'
+
+          #artifact publish
           - task: PublishPipelineArtifact@1
           
             inputs:
@@ -169,10 +177,12 @@ stages:
           inputs:
             artifact: 'tfplan'
             path: '$(Pipeline.Workspace)/tfplan'
-
+      #install tf
         - task: TerraformInstaller@1
           inputs:
             terraformVersion: 'latest'
+      
+      #init tf
         - task: TerraformTask@5
           displayName: tf init
           inputs:
