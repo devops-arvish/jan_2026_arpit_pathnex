@@ -154,14 +154,17 @@ stages:
 
         
         #plan
-  #         - task: TerraformTask@5
-  #           displayName: tf plan
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'plan'
-  #             workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-  #             commandOptions: '-out=tfplan -var="ssh_public_key=$(ssh_public_key)'
-  #             environmentServiceNameAzureRM: 'azurecloud'
+          - task: TerraformTask@5
+            displayName: tf plan
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+              commandOptions: '-out=tfplan'# -var="ssh_public_key=$(ssh_public_key)'
+              # commandOptions: '-out=tfplan -var="ssh_public_key=$(ssh-public-key)'
+              environmentServiceNameAzureRM: 'azurecloud'
+            env:
+              TF_VAR_ssh_public_key: $(ssh-public-key)
 
   #         # artifact publish
   #         - task: PublishPipelineArtifact@1
