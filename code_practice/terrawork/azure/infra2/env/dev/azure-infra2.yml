@@ -129,15 +129,21 @@ stages:
               backendAzureRmStorageAccountName: 'arpit123'
               backendAzureRmContainerName: 'tfstate'
               backendAzureRmKey: 'dev-terraform.tfstate'
-        #plan
-          - task: TerraformTask@5
-            displayName: tf plan
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-              commandOptions: '-out=tfplan -var="ssh_public_key=$(key-dev-2)'
-              environmentServiceNameAzureRM: 'azurecloud'
+          - script: |
+               KEY_PREFIX=$(echo "$(key-dev-2)" | awk '{print $1}')
+
+               echo "Type: $KEY_PREFIX"
+               echo "Length: $(echo "$(key-dev-2)" | wc -c)"
+            displayName: Verify SSH Key Format
+        # #plan
+        #   - task: TerraformTask@5
+        #     displayName: tf plan
+        #     inputs:
+        #       provider: 'azurerm'
+        #       command: 'plan'
+        #       workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+        #       commandOptions: '-out=tfplan -var="ssh_public_key=$(key-dev-2)'
+        #       environmentServiceNameAzureRM: 'azurecloud'
 
           #artifact publish
           - task: PublishPipelineArtifact@1
@@ -148,52 +154,52 @@ stages:
             displayName: Publish Terraform Plan
 
 
-  - stage: ManualValidation
-    displayName: Manual Validation
-    dependsOn: tfPlan
-    pool: server
-    jobs:
-    - job: ManualValidation
-      displayName: Manual Validation
+  # - stage: ManualValidation
+  #   displayName: Manual Validation
+  #   dependsOn: tfPlan
+  #   pool: server
+  #   jobs:
+  #   - job: ManualValidation
+  #     displayName: Manual Validation
       
-      steps:
-      - task: ManualValidation@1
-        displayName: validation
-        inputs:
-          notifyUsers: |
-            mishrapraveenm55@gmail.com
-            arvishpanther@gmail.com
-          approvers: 'arvishpanther@gmail.com'
-          onTimeout: 'reject'
+  #     steps:
+  #     - task: ManualValidation@1
+  #       displayName: validation
+  #       inputs:
+  #         notifyUsers: |
+  #           mishrapraveenm55@gmail.com
+  #           arvishpanther@gmail.com
+  #         approvers: 'arvishpanther@gmail.com'
+  #         onTimeout: 'reject'
 
-  - stage: tfApply
-    dependsOn: ManualValidation
-    displayName: apply after validation
-    jobs:
-    - job: tfApply
-      displayName: apply process
-      steps:
-        - task: DownloadPipelineArtifact@2
-          inputs:
-            artifact: 'tfplan'
-            path: '$(Pipeline.Workspace)/tfplan'
-      #install tf
-        - task: TerraformInstaller@1
-          inputs:
-            terraformVersion: 'latest'
+  # - stage: tfApply
+  #   dependsOn: ManualValidation
+  #   displayName: apply after validation
+  #   jobs:
+  #   - job: tfApply
+  #     displayName: apply process
+  #     steps:
+  #       - task: DownloadPipelineArtifact@2
+  #         inputs:
+  #           artifact: 'tfplan'
+  #           path: '$(Pipeline.Workspace)/tfplan'
+  #     #install tf
+  #       - task: TerraformInstaller@1
+  #         inputs:
+  #           terraformVersion: 'latest'
       
-      #init tf
-        - task: TerraformTask@5
-          displayName: tf init
-          inputs:
-            provider: 'azurerm'
-            command: 'init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-            backendServiceArm: 'azurecloud'
-            backendAzureRmResourceGroupName: 'arpitRG'
-            backendAzureRmStorageAccountName: 'arpit123'
-            backendAzureRmContainerName: 'tfstate'
-            backendAzureRmKey: 'dev-terraform.tfstate'
+  #     #init tf
+  #       - task: TerraformTask@5
+  #         displayName: tf init
+  #         inputs:
+  #           provider: 'azurerm'
+  #           command: 'init'
+  #           workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+  #           backendServiceArm: 'azurecloud'
+  #           backendAzureRmResourceGroupName: 'arpitRG'
+  #           backendAzureRmStorageAccountName: 'arpit123'
+  #           backendAzureRmContainerName: 'tfstate'
+  #           backendAzureRmKey: 'dev-terraform.tfstate'
 
 
         # - task: TerraformTask@5
