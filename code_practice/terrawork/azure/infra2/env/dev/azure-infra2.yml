@@ -203,8 +203,8 @@ stages:
       - task: ManualValidation@1
         displayName: validation
         inputs:
-          notifyUsers: 'praveenmishram55@gmail.com'
-          approvers: 'praveenmishram55@gmail.com'
+          notifyUsers: praveenmishram55@gmail.com
+          approvers: praveenmishram55@gmail.com
           instructions: 'please review and approve to deploy tf infra2'
           defaultResult: 'reject'
           defaultTimeout: '5' # 5minutes
