@@ -204,11 +204,11 @@ stages:
         displayName: validation
         inputs:
           notifyUsers: |
-            praveenmishram55@gmail.com
-            arvishpanther@gmail.com
+            'praveenmishram55@gmail.com'
+            'arvishpanther@gmail.com'
           approvers: |
-            arvishpanther@gmail.com
-            praveenmishram55@gmail.com
+            'arvishpanther@gmail.com'
+            'praveenmishram55@gmail.com'
           instructions: 'please review and approve to deploy tf infra2'
           defaultResult: 'reject'
           defaultTimeout: '5' # 5minutes
