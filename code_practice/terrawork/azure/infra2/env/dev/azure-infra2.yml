@@ -199,11 +199,11 @@ stages:
         displayName: validation
         inputs:
           notifyUsers: |
-            mishrapraveenm55@gmail.com
+            praveenmishram55@gmail.com
             arvishpanther@gmail.com
           approvers: |
             arvishpanther@gmail.com
-            mishrapraveenm55@gmail.com
+            praveenmishram55@gmail.com
           instructions: 'please review and approve to deploy tf infra2'
 
   # - stage: tfApply
