@@ -201,8 +201,10 @@ stages:
           notifyUsers: |
             mishrapraveenm55@gmail.com
             arvishpanther@gmail.com
-          approvers: 'arvishpanther@gmail.com'
-          onTimeout: 'reject'
+          approvers: |
+            arvishpanther@gmail.com
+            mishrapraveenm55@gmail.com
+          instructions: 'please review and approve to deploy tf infra2'
 
   # - stage: tfApply
   #   dependsOn: ManualValidation
