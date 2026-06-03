@@ -12,5 +12,5 @@ kv_name = "key-dev-arvish-2"
 
 vm_name        = "vm-dev"
 nic_name       = "nic-dev"
-    vm_size        = "D2als_v6"
+    vm_size        = "Standard_D2als_v6"
 admin_username = "azureuser"
