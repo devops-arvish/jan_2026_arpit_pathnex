@@ -6,82 +6,82 @@ pool:
 variables:
   - group: 'key vault secret for terraform'
 
+stages:
+  - stage: tfDestroyPlan
+    displayName: Terraform Destroy Plan
 
-- stage: tfDestroyPlan
-  displayName: Terraform Destroy Plan
+    jobs:
+    - job: DestroyPlan
+      steps:
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: 'latest'
 
-  jobs:
-  - job: DestroyPlan
-    steps:
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+          backendServiceArm: 'azurecloud'
+          backendAzureRmResourceGroupName: 'arpitRG'
+          backendAzureRmStorageAccountName: 'arpit123'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev-terraform.tfstate'
 
-    - task: TerraformTask@5
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-        backendServiceArm: 'azurecloud'
-        backendAzureRmResourceGroupName: 'arpitRG'
-        backendAzureRmStorageAccountName: 'arpit123'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'dev-terraform.tfstate'
-
-    - task: TerraformTask@5
-      inputs:
-        provider: 'azurerm'
-        command: 'plan'
-        commandOptions: '-destroy -out=destroy.tfplan'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-        environmentServiceNameAzureRM: 'azurecloud'
-      env:
-        TF_VAR_ssh_public_key: $(ssh-public-key)
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          commandOptions: '-destroy'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+          environmentServiceNameAzureRM: 'azurecloud'
+        env:
+          TF_VAR_ssh_public_key: $(ssh-public-key)
 
 
-- stage: DestroyApproval
-  dependsOn: tfDestroyPlan
-  pool: server
+  - stage: DestroyApproval
+    dependsOn: tfDestroyPlan
+    pool: server
 
-  jobs:
-  - job: Approval
-    steps:
-    - task: ManualValidation@1
-      inputs:
-        notifyUsers: |
-          praveenmishram55@gmail.com
-        approvers: |
-          praveenmishram55@gmail.com
-        instructions: 'Approve Terraform Destroy'
-        onTimeout: 'reject'
+    jobs:
+    - job: Approval
+      steps:
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: |
+            praveenmishram55@gmail.com
+          approvers: |
+            praveenmishram55@gmail.com
+          instructions: 'Approve Terraform Destroy'
+          onTimeout: 'reject'
 
-- stage: tfDestroy
-  dependsOn: DestroyApproval
+  - stage: tfDestroy
+    dependsOn: DestroyApproval
 
-  jobs:
-  - job: Destroy
-    steps:
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
+    jobs:
+    - job: Destroy
+      steps:
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: 'latest'
 
-    - task: TerraformTask@5
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-        backendServiceArm: 'azurecloud'
-        backendAzureRmResourceGroupName: 'arpitRG'
-        backendAzureRmStorageAccountName: 'arpit123'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'dev-terraform.tfstate'
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+          backendServiceArm: 'azurecloud'
+          backendAzureRmResourceGroupName: 'arpitRG'
+          backendAzureRmStorageAccountName: 'arpit123'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev-terraform.tfstate'
 
-    - task: TerraformTask@5
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
-        environmentServiceNameAzureRM: 'azurecloud'
-      env:
-        TF_VAR_ssh_public_key: $(ssh-public-key)
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'destroy'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/code_practice/terrawork/azure/infra2/env/dev'
+          environmentServiceNameAzureRM: 'azurecloud'
+        env:
+          TF_VAR_ssh_public_key: $(ssh-public-key)
 
